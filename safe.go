@@ -6,7 +6,7 @@ import (
 	"github.com/cloudlibraries/cast"
 )
 
-func Call(a any) (err error) {
+func Do(a any) (err error) {
 	defer func() {
 		if v := recover(); v != nil {
 			err = fmt.Errorf("panic: %w", cast.ToError(v))
@@ -25,11 +25,11 @@ func Call(a any) (err error) {
 	return
 }
 
-func AsyncCall(a any) (err error) {
+func Go(a any) (err error) {
 	errCh := make(chan error, 1)
 
 	go func() {
-		errCh <- Call(a)
+		errCh <- Do(a)
 	}()
 
 	return <-errCh
