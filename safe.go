@@ -25,6 +25,12 @@ func Do(a any) (err error) {
 	return
 }
 
+func DoWith(a any, f func(err error)) {
+	if err := Do(a); err != nil {
+		f(err)
+	}
+}
+
 func Go(a any) (err error) {
 	errCh := make(chan error, 1)
 
@@ -33,4 +39,10 @@ func Go(a any) (err error) {
 	}()
 
 	return <-errCh
+}
+
+func GoWith(a any, f func(err error)) {
+	go func() {
+		f(Go(a))
+	}()
 }
