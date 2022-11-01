@@ -1,7 +1,9 @@
 package safe
 
 import (
+	"context"
 	"fmt"
+	"time"
 
 	"github.com/cloudlibraries/cast"
 )
@@ -25,24 +27,24 @@ func Do(a any) (err error) {
 	return
 }
 
-func DoWith(a any, f func(err error)) {
-	if err := Do(a); err != nil {
-		f(err)
-	}
-}
-
-func Go(a any) (err error) {
+func DoWithContext(ctx context.Context, a any) (err error) {
 	errCh := make(chan error, 1)
 
 	go func() {
 		errCh <- Do(a)
 	}()
 
-	return <-errCh
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	case err = <-errCh:
+		return err
+	}
 }
 
-func GoWith(a any, f func(err error)) {
-	go func() {
-		f(Go(a))
-	}()
+func DoWithTimeout(a any, d time.Duration) error {
+	ctx, cancel := context.WithTimeout(context.Background(), d)
+	defer cancel()
+
+	return DoWithContext(ctx, a)
 }
