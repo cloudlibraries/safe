@@ -3,6 +3,7 @@ package safe
 import (
 	"context"
 	"fmt"
+	"sync"
 	"time"
 
 	"github.com/cloudlibraries/cast"
@@ -47,4 +48,75 @@ func DoWithTimeout(d time.Duration, a any) error {
 	defer cancel()
 
 	return DoWithContext(ctx, a)
+}
+
+type Lock struct {
+	sync.Mutex
+}
+
+func (l *Lock) Do(a any) (err error) {
+	l.Lock()
+	defer l.Unlock()
+
+	return Do(a)
+}
+
+func (l *Lock) DoWithContext(ctx context.Context, a any) (err error) {
+	l.Lock()
+	defer l.Unlock()
+
+	return DoWithContext(ctx, a)
+}
+
+func (l *Lock) DoWithTimeout(d time.Duration, a any) (err error) {
+	l.Lock()
+	defer l.Unlock()
+
+	return DoWithTimeout(d, a)
+}
+
+type RWLock struct {
+	sync.RWMutex
+}
+
+func (l *RWLock) Do(a any) (err error) {
+	l.Lock()
+	defer l.Unlock()
+
+	return Do(a)
+}
+
+func (l *RWLock) DoWithContext(ctx context.Context, a any) (err error) {
+	l.Lock()
+	defer l.Unlock()
+
+	return DoWithContext(ctx, a)
+}
+
+func (l *RWLock) DoWithTimeout(d time.Duration, a any) (err error) {
+	l.Lock()
+	defer l.Unlock()
+
+	return DoWithTimeout(d, a)
+}
+
+func (l *RWLock) RDo(a any) (err error) {
+	l.RLock()
+	defer l.RUnlock()
+
+	return Do(a)
+}
+
+func (l *RWLock) RDoWithContext(ctx context.Context, a any) (err error) {
+	l.RLock()
+	defer l.RUnlock()
+
+	return DoWithContext(ctx, a)
+}
+
+func (l *RWLock) RDoWithTimeout(d time.Duration, a any) (err error) {
+	l.RLock()
+	defer l.RUnlock()
+
+	return DoWithTimeout(d, a)
 }
