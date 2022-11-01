@@ -42,7 +42,7 @@ func DoWithContext(ctx context.Context, a any) (err error) {
 	}
 }
 
-func DoWithTimeout(a any, d time.Duration) error {
+func DoWithTimeout(d time.Duration, a any) error {
 	ctx, cancel := context.WithTimeout(context.Background(), d)
 	defer cancel()
 
