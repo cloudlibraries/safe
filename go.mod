@@ -1,10 +1,10 @@
-module github.com/cloudlibraries/safe
+module github.com/golibraries/safe
 
 go 1.19
 
 require (
-	github.com/cloudlibraries/cast v1.0.0
 	github.com/frankban/quicktest v1.14.3
+	github.com/golibraries/cast v1.0.1
 )
 
 require (
