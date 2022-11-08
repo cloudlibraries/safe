@@ -8,8 +8,8 @@
     "editor.parameterHints.enabled": true,
     "editor.tabCompletion": "on",
     "editor.insertSpaces": false,
-    "editor.fontFamily": "Fira Code",
-    "terminal.integrated.fontFamily": "Fira Code",
+    "editor.fontFamily": "Cascadia Code",
+    "terminal.integrated.fontFamily": "Cascadia Code",
     "extensions.ignoreRecommendations": false,
     "search.exclude": {
         "vendor/*": true,
